@@ -1,4 +1,4 @@
-# horoscoolaviano
+# horoscopolaviano
 Um horóscopo Olavista.
 
 Spring boot + twitter4j
