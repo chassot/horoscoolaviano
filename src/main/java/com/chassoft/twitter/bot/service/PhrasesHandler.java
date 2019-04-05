@@ -3,13 +3,15 @@ package com.chassoft.twitter.bot.service;
 import com.chassoft.twitter.bot.domain.Tweet;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
 
 import java.util.Random;
 
+@Component
 @PropertySource("classpath:tweet-base.properties")
 public class PhrasesHandler {
 
-    private final String SEPARATOR ="#";
+    private final String SEPARATOR = "#";
 
     @Value("${aries}")
     private String aries;
@@ -35,34 +37,47 @@ public class PhrasesHandler {
     private String aquario;
     @Value("${peixes}")
     private String peixes;
+    @Value("${all}")
+    private String all;
 
-
-    public Tweet getContent(Tweet tweet){
+    public Tweet getContentBySign(Tweet tweet) {
         String content = "";
-        switch (tweet.getSign()){
-            case ARIES: content = getSignPhrase(aries);
+        switch (tweet.getSign()) {
+            case ARIES:
+                content = getSignPhrase(aries);
                 break;
-            case LEAO: content = getSignPhrase(leao);
+            case LEAO:
+                content = getSignPhrase(leao);
                 break;
-            case LIBRA:content = getSignPhrase(libra);
+            case LIBRA:
+                content = getSignPhrase(libra);
                 break;
-            case TOURO:content = getSignPhrase(touro);
+            case TOURO:
+                content = getSignPhrase(touro);
                 break;
-            case AQUARIO:content = getSignPhrase(aquario);
+            case AQUARIO:
+                content = getSignPhrase(aquario);
                 break;
-            case CANCER:content = getSignPhrase(cancer);
+            case CANCER:
+                content = getSignPhrase(cancer);
                 break;
-            case CAPRICORNIO:content = getSignPhrase(capricornio);
+            case CAPRICORNIO:
+                content = getSignPhrase(capricornio);
                 break;
-            case ESCORPIAO:content = getSignPhrase(escorpiao);
+            case ESCORPIAO:
+                content = getSignPhrase(escorpiao);
                 break;
-            case GEMEOS:content = getSignPhrase(gemeos);
+            case GEMEOS:
+                content = getSignPhrase(gemeos);
                 break;
-            case PEIXES:content = getSignPhrase(peixes);
+            case PEIXES:
+                content = getSignPhrase(peixes);
                 break;
-            case SAGITARIO:content = getSignPhrase(sagitario);
+            case SAGITARIO:
+                content = getSignPhrase(sagitario);
                 break;
-            case VIRGEM:content = getSignPhrase(virgem);
+            case VIRGEM:
+                content = getSignPhrase(virgem);
                 break;
         }
         tweet.setResponseText(tweet.getFromDecorator() + content);
@@ -70,13 +85,22 @@ public class PhrasesHandler {
 
     }
 
-    private String getSignPhrase(String basePhrases){
+    public Tweet getContent(Tweet tweet) {
+
+        String content = getSignPhrase(all);
+        tweet.setResponseText(tweet.getFromDecorator() + content);
+        return tweet;
+
+    }
+
+    private String getSignPhrase(String basePhrases) {
         String tweetContent = null;
         String[] phrases = basePhrases.split(SEPARATOR);
-        tweetContent = phrases[getRandomNumberInRange(0, phrases.length-1)];
+        tweetContent = phrases[getRandomNumberInRange(0, phrases.length - 1)];
 
         return tweetContent;
     }
+
 
     private int getRandomNumberInRange(int min, int max) {
         if (min >= max) {

@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import twitter4j.Status;
 
+import java.text.Normalizer;
+
 @Data
 @NoArgsConstructor
 @ToString
@@ -18,47 +20,56 @@ public class Tweet {
     }
 
     public Sign getSign() {
-        if(status.getText().toUpperCase().contains(Sign.ARIES.name())){
+        if(normalize(status.getText().toUpperCase()).contains(Sign.ARIES.name())){
             return Sign.ARIES;
         }
-        if(status.getText().toUpperCase().contains(Sign.TOURO.name())){
+        if(normalize(status.getText().toUpperCase()).contains(Sign.TOURO.name())){
             return Sign.TOURO;
         }
-        if(status.getText().toUpperCase().contains(Sign.GEMEOS.name())){
+        if(normalize(status.getText().toUpperCase()).contains(Sign.GEMEOS.name())){
             return Sign.GEMEOS;
         }
-        if(status.getText().toUpperCase().contains(Sign.CANCER.name())){
+        if(normalize(status.getText().toUpperCase()).contains(Sign.CANCER.name())){
             return Sign.CANCER;
         }
-        if(status.getText().toUpperCase().contains(Sign.LEAO.name())){
+        if(normalize(status.getText().toUpperCase()).contains(Sign.LEAO.name())){
             return Sign.LEAO;
         }
-        if(status.getText().toUpperCase().contains(Sign.VIRGEM.name())){
+        if(normalize(status.getText().toUpperCase()).contains(Sign.VIRGEM.name())){
             return Sign.VIRGEM;
         }
-        if(status.getText().toUpperCase().contains(Sign.LIBRA.name())){
+        if(normalize(status.getText().toUpperCase()).contains(Sign.LIBRA.name())){
             return Sign.LIBRA;
         }
-        if(status.getText().toUpperCase().contains(Sign.ESCORPIAO.name())){
+        if(normalize(status.getText().toUpperCase()).contains(Sign.ESCORPIAO.name())){
             return Sign.ESCORPIAO;
         }
-        if(status.getText().toUpperCase().contains(Sign.SAGITARIO.name())){
+        if(normalize(status.getText().toUpperCase()).contains(Sign.SAGITARIO.name())){
             return Sign.SAGITARIO;
         }
-        if(status.getText().toUpperCase().contains(Sign.CAPRICORNIO.name())){
+        if(normalize(status.getText().toUpperCase()).contains(Sign.CAPRICORNIO.name())){
             return Sign.CAPRICORNIO;
         }
-        if(status.getText().toUpperCase().contains(Sign.AQUARIO.name())){
+        if(normalize(status.getText().toUpperCase()).contains(Sign.AQUARIO.name())){
             return Sign.AQUARIO;
         }
-        if(status.getText().toUpperCase().contains(Sign.PEIXES.name())){
+        if(normalize(status.getText().toUpperCase()).contains(Sign.PEIXES.name())){
             return Sign.PEIXES;
         }
         return null;
     }
 
     public String getFromDecorator(){
-        return "@" + this.getStatus().getUser().getScreenName() + " ";
+        Sign sign = getSign();
+        String text ="";
+        if(sign != null){
+            text = sign.toString() + ": ";
+        }
+        return "@" + this.getStatus().getUser().getScreenName() + " " + text;
+    }
+
+    public static String normalize(String str) {
+        return Normalizer.normalize(str, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
     }
 
     public enum Sign {
@@ -73,6 +84,6 @@ public class Tweet {
         SAGITARIO,
         CAPRICORNIO,
         AQUARIO,
-        PEIXES;
+        PEIXES
     }
 }
